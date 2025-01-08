@@ -8,7 +8,7 @@ export function GameSymbol({ symbol }) {
     return "";
   };
   return (
-    <span className={`${styles["symbol"]} ${getSymbolClassName(symbol)}`}>
+    <span className={`text-2xl leading-7 ${getSymbolClassName(symbol)}`}>
       {symbol}
     </span>
   );
