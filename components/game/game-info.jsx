@@ -14,10 +14,7 @@ export function GameInfo({ isDraw, currentStep, winnerSymbol }) {
 
   if (winnerSymbol) {
     return (
-      <div
-        className="mb-2.5 text-3xl text-[aliceblue] mb-2.5;
-  text-shadow: 3px 3px 1px #e70c0c;"
-      >
+      <div className="mb-2.5 text-3xl text-[aliceblue] mb-2.5 drop-shadow-[1px_1px_1px_rgba(235,0,0,0.5)]">
         Winner: <GameSymbol symbol={winnerSymbol} />
       </div>
     );
