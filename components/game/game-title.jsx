@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { ArrowLeftIcon } from "./icons/arrow-left-icon";
+import { HistoryIcon } from "./icons/history-icon";
+import { UserIcon } from "./icons/players-icon";
+import { StarIcon } from "./icons/star-icon";
 
 export function GameTitle() {
   return (
@@ -11,7 +14,12 @@ export function GameTitle() {
         <ArrowLeftIcon />
         Main
       </Link>
-      <h1 className="text-4xl">Tic Tac Toe</h1>
+      <h1 className="text-4xl leading-tight">Tic Tac Toe</h1>
+      <div>
+        <StarIcon />
+        <UserIcon />
+        <HistoryIcon />
+      </div>
     </div>
   );
 }
