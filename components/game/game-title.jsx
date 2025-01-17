@@ -15,10 +15,14 @@ export function GameTitle() {
         Main
       </Link>
       <h1 className="text-4xl leading-tight">Tic Tac Toe</h1>
-      <div>
+      <div className="flex items-center gap-3 text-xs text-slate-400">
         <StarIcon />
-        <UserIcon />
-        <HistoryIcon />
+        <div className="flex items-center gap-1">
+          <UserIcon /> 2
+        </div>
+        <div className="flex items-center gap-1">
+          <HistoryIcon /> 1 min per move
+        </div>
       </div>
     </div>
   );
