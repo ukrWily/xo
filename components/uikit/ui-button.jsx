@@ -22,7 +22,8 @@ export function UIButton({ children, className, size, variant }) {
     {
       primary:
         "bg-teal-600 text-white hover:bg-teal-500 hover:shadow-[0_5px_5px_rgba(0,0,0,0.5)] active::shadow-[0_1px_1px_rgba(0,0,0,0.5)] active:scale-90  ",
-      outline: "border border-teal-600 text-teal-600 hover:bg-teal-50",
+      outline:
+        "border border-teal-600 text-teal-600 hover:bg-teal-50  hover:shadow-[0_5px_5px_rgba(0,0,0,0.5)] active::shadow-[0_0_0_rgba(0,0,0,0.1)] active:scale-90  ",
     }[variant]
   );
 
