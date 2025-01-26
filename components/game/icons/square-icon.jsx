@@ -1,12 +1,12 @@
-export function SquareIcon() {
+export function SquareIcon({ className }) {
   return (
     <svg
+      className={className}
       width="12.000000"
       height="12.000000"
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
     >
       <path
         id="Vector"

@@ -1,15 +1,8 @@
 import clsx from "clsx";
-import { ZeroIcon } from "./icons/zero-icon";
-import { CrossIcon } from "./icons/cross-icon";
 import { UIButton } from "../uikit/ui-button";
 import { useState } from "react";
-
-const GAME_SYMBOLS = {
-  ZERO: "zero",
-  CROSS: "cross",
-  TRIANGLE: "triangle",
-  SQUARE: "square",
-};
+import { GAME_SYMBOLS } from "./constants";
+import { GameSymbol } from "./game-symbol";
 
 const MOVE_ORDER = [
   GAME_SYMBOLS.CROSS,
@@ -43,7 +36,11 @@ export function GameField({ className }) {
 
   return (
     <GameFieldLayout className={className}>
-      <GameMoveInfo actions={actions} />
+      <GameMoveInfo
+        actions={actions}
+        currentMove={currentMove}
+        nextMove={nexMove}
+      />
       <GameGrid>
         {cells.map((_, index) => (
           <GameCell key={index}></GameCell>
@@ -74,15 +71,15 @@ function GameFieldLayout({ children, className }) {
   );
 }
 
-function GameMoveInfo({ actions }) {
+function GameMoveInfo({ actions, currentMove, nextMove }) {
   return (
     <div className="flex gap-3 items-center">
       <div className="mr-auto">
         <div className="flex items-center gap-1 text-xl font-bold leading-tight">
-          Move: <ZeroIcon className="w-5 h-5" />
+          Move: <GameSymbol symbol={currentMove} className="w-4 h-4" />
         </div>
         <div className="flex items-center gap-1 text-xs text-slate-400 leading-tight">
-          Next: <CrossIcon />
+          Next: <GameSymbol symbol={nextMove} className="w-3 h-3" />
         </div>
       </div>
       {actions}

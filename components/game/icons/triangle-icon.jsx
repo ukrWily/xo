@@ -1,6 +1,7 @@
-export function TriangleIconIcon() {
+export function TriangleIcon({ className }) {
   return (
     <svg
+      className={className}
       width="12"
       height="11"
       viewBox="0 0 20 18"
