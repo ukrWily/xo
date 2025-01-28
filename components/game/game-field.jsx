@@ -19,9 +19,23 @@ function getNextMove(currentMove) {
 }
 
 export function GameField({ className }) {
-  const [cells, setCells] = useState(() => new Array(19 * 19).fill(null));
-  const [currentMove, setCurrentMove] = useState(GAME_SYMBOLS.CROSS);
+  const [{ cells, currentMove }, setGameState] = useState(() => {
+    return {
+      cells: new Array(19 * 19).fill(null),
+      currentMove: GAME_SYMBOLS.CROSS,
+    };
+  });
   const nexMove = getNextMove(currentMove);
+
+  const handleCellClick = (index) => {
+    setGameState((lastGameState) => ({
+      ...lastGameState,
+      currentMove: getNextMove(lastGameState.currentMove),
+      cells: lastGameState.cells.map((cell, i) =>
+        i === index ? lastGameState.currentMove : cell
+      ),
+    }));
+  };
 
   const actions = (
     <>
@@ -42,17 +56,27 @@ export function GameField({ className }) {
         nextMove={nexMove}
       />
       <GameGrid>
-        {cells.map((_, index) => (
-          <GameCell key={index}></GameCell>
+        {cells.map((symbol, index) => (
+          <GameCell
+            key={index}
+            onClick={() => {
+              handleCellClick(index);
+            }}
+          >
+            {symbol && <GameSymbol symbol={symbol} className="w-4 h-4" />}
+          </GameCell>
         ))}
       </GameGrid>
     </GameFieldLayout>
   );
 }
 
-function GameCell({ children }) {
+function GameCell({ children, onClick }) {
   return (
-    <button className="border border-slate-200 rounded hover:border-teal-300 transition-transform grid place-items-center">
+    <button
+      onClick={onClick}
+      className="border border-slate-200 rounded hover:border-teal-300 transition-transform grid place-items-center"
+    >
       {children}
     </button>
   );
