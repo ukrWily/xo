@@ -1,41 +1,12 @@
 import clsx from "clsx";
 import { UIButton } from "../uikit/ui-button";
-import { useState } from "react";
+import { use, useState } from "react";
 import { GAME_SYMBOLS } from "./constants";
 import { GameSymbol } from "./game-symbol";
-
-const MOVE_ORDER = [
-  GAME_SYMBOLS.CROSS,
-  GAME_SYMBOLS.ZERO,
-  GAME_SYMBOLS.TRIANGLE,
-  GAME_SYMBOLS.SQUARE,
-];
-
-function getNextMove(currentMove) {
-  const nextMoveIndex = MOVE_ORDER.indexOf(currentMove) + 1;
-  return MOVE_ORDER[nextMoveIndex % MOVE_ORDER.length];
-  //  or
-  // return MOVE_ORDER[nextMoveIndex] ?? MOVE_ORDER[0];
-}
+import { useGameState } from "./use-game-state";
 
 export function GameField({ className }) {
-  const [{ cells, currentMove }, setGameState] = useState(() => {
-    return {
-      cells: new Array(19 * 19).fill(null),
-      currentMove: GAME_SYMBOLS.CROSS,
-    };
-  });
-  const nexMove = getNextMove(currentMove);
-
-  const handleCellClick = (index) => {
-    setGameState((lastGameState) => ({
-      ...lastGameState,
-      currentMove: getNextMove(lastGameState.currentMove),
-      cells: lastGameState.cells.map((cell, i) =>
-        i === index ? lastGameState.currentMove : cell
-      ),
-    }));
-  };
+  const { cells, currentMove, handleCellClick, nextMove } = useGameState();
 
   const actions = (
     <>
@@ -53,7 +24,7 @@ export function GameField({ className }) {
       <GameMoveInfo
         actions={actions}
         currentMove={currentMove}
-        nextMove={nexMove}
+        nextMove={nextMove}
       />
       <GameGrid>
         {cells.map((symbol, index) => (
