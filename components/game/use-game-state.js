@@ -2,30 +2,38 @@ import { useState } from "react";
 import { MOVE_ORDER } from "./constants";
 import { GAME_SYMBOLS } from "./constants";
 
-function getNextMove(currentMove) {
-  const nextMoveIndex = MOVE_ORDER.indexOf(currentMove) + 1;
-  return MOVE_ORDER[nextMoveIndex % MOVE_ORDER.length];
+function getNextMove(currentMove, playersCount) {
+  const slicedMoveOrder = MOVE_ORDER.slice(0, playersCount);
+
+  const nextMoveIndex = slicedMoveOrder.indexOf(currentMove) + 1;
+  // return slicedMoveOrder[nextMoveIndex % slicedMoveOrder.length];
   //  or
-  // return MOVE_ORDER[nextMoveIndex] ?? MOVE_ORDER[0];
+  return slicedMoveOrder[nextMoveIndex] ?? slicedMoveOrder[0];
 }
 
-export function useGameState() {
+export function useGameState(playersCount) {
   const [{ cells, currentMove }, setGameState] = useState(() => ({
     cells: new Array(19 * 19).fill(null),
     currentMove: GAME_SYMBOLS.CROSS,
   }));
 
-  const nexMove = getNextMove(currentMove);
+  const nextMove = getNextMove(currentMove, playersCount);
 
   const handleCellClick = (index) => {
-    setGameState((lastGameState) => ({
-      ...lastGameState,
-      currentMove: getNextMove(lastGameState.currentMove),
-      cells: lastGameState.cells.map((cell, i) =>
-        i === index ? lastGameState.currentMove : cell
-      ),
-    }));
+    setGameState((lastGameState) => {
+      if (lastGameState.cells[index]) {
+        return lastGameState;
+      }
+
+      return {
+        ...lastGameState,
+        currentMove: getNextMove(lastGameState.currentMove, playersCount),
+        cells: lastGameState.cells.map((cell, i) =>
+          i === index ? lastGameState.currentMove : cell
+        ),
+      };
+    });
   };
 
-  return { cells, currentMove, handleCellClick, nexMove };
+  return { cells, currentMove, handleCellClick, nextMove };
 }

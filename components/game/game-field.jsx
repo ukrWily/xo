@@ -5,8 +5,9 @@ import { GAME_SYMBOLS } from "./constants";
 import { GameSymbol } from "./game-symbol";
 import { useGameState } from "./use-game-state";
 
-export function GameField({ className }) {
-  const { cells, currentMove, handleCellClick, nextMove } = useGameState();
+export function GameField({ className, playersCount }) {
+  const { cells, currentMove, handleCellClick, nextMove } =
+    useGameState(playersCount);
 
   const actions = (
     <>
@@ -67,6 +68,7 @@ function GameFieldLayout({ children, className }) {
 }
 
 function GameMoveInfo({ actions, currentMove, nextMove }) {
+  console.log(nextMove);
   return (
     <div className="flex gap-3 items-center">
       <div className="mr-auto">

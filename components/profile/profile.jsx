@@ -1,8 +1,8 @@
 import Image from "next/image";
-import photo from "./photo.png";
+import avatarSrc from "./photo.png";
 import clsx from "clsx";
 
-export function Profile({ className }) {
+export function Profile({ className, name, rating, avatar = avatarSrc }) {
   return (
     <div
       className={clsx(
@@ -10,10 +10,13 @@ export function Profile({ className }) {
         className
       )}
     >
-      <Image src={photo} alt="Photo" className="rounded-full w-12 h-12" />
-      <div>
-        <div className=" text-lg leading-tight">John Doe</div>
-        <div className="text-slate-400 text-xs leading-tight">Rating: 1230</div>
+      <Image src={avatar} alt="Photo" className="rounded-full w-12 h-12" />
+      <div className="overflow-hidden">
+        {/* truncate - cut a long word */}
+        <div className=" text-lg leading-tight truncate">{name}</div>
+        <div className="text-slate-400 text-xs leading-tight">
+          Rating: {rating}
+        </div>
       </div>
     </div>
   );
