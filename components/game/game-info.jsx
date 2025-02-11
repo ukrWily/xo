@@ -8,6 +8,7 @@ import avatarSrc1 from "../game/images/avatar-1.png";
 import avatarSrc2 from "../game/images/avatar-2.png";
 import avatarSrc3 from "../game/images/avatar-3.png";
 import avatarSrc4 from "../game/images/avatar-4.png";
+import { useState } from "react";
 
 const players = [
   {
@@ -60,6 +61,10 @@ export function GameInfo({ className, playersCount }) {
 }
 
 function PlayerInfo({ playerInfo, isRight }) {
+  const [seconds, setSeconds] = useState(60);
+  const minutesString = String(Math.floor(seconds / 60)).padStart(2, "0");
+  const secondsString = String(seconds % 60).padStart(2, "0");
+
   return (
     <div className="flex gap-3 items-center shadow-[2px_2px_5px_rgba(0,0,0,.3)] rounded-lg px-4 py-2">
       <div className={clsx("relative", isRight && "order-3")}>
@@ -80,7 +85,7 @@ function PlayerInfo({ playerInfo, isRight }) {
           isRight && "order-1"
         )}
       >
-        01:08
+        {minutesString}:{secondsString}
       </div>
     </div>
   );
