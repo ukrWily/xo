@@ -7,7 +7,7 @@ import { UIButton } from "../uikit/ui-button";
 
 export function Header() {
   return (
-    <header className="bg-white h-[100px] flex items-center p-8 shadow-lg">
+    <header className="bg-white h-[80px] flex items-center p-8 shadow-lg">
       <Image src={logo} alt="Logo" />
       <div className="w-px h-8 bg-slate-200 mx-6" />
       <UIButton className="w-44" size="lg" variant="primary">
