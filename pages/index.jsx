@@ -12,7 +12,7 @@ import { useGameState } from "../components/game/use-game-state";
 import { useState } from "react";
 
 export default function HomePage() {
-  const [playersCount, setPlayersCount] = useState(2);
+  const [playersCount, setPlayersCount] = useState(4);
   const { cells, currentMove, handleCellClick, nextMove } =
     useGameState(playersCount);
 
@@ -21,7 +21,11 @@ export default function HomePage() {
       <Header />
       <main className="pt-4 mx-auto w-max">
         <GameTitle playersCount={playersCount} />
-        <GameInfo playersCount={playersCount} className="mt-4" />
+        <GameInfo
+          playersCount={playersCount}
+          className="mt-4"
+          currentMove={currentMove}
+        />
         <GameField
           playersCount={playersCount}
           cells={cells}

@@ -41,7 +41,7 @@ const players = [
   },
 ];
 
-export function GameInfo({ className, playersCount }) {
+export function GameInfo({ className, playersCount, currentMove }) {
   return (
     <div
       className={clsx(
@@ -54,28 +54,47 @@ export function GameInfo({ className, playersCount }) {
           key={player.id}
           playerInfo={player}
           isRight={index % 2 === 1}
+          isTimerRunning={currentMove === player.symbol}
         />
       ))}
     </div>
   );
 }
 
-function PlayerInfo({ playerInfo, isRight }) {
+function PlayerInfo({ playerInfo, isRight, isTimerRunning }) {
   const [seconds, setSeconds] = useState(60);
   const minutesString = String(Math.floor(seconds / 60)).padStart(2, "0");
   const secondsString = String(seconds % 60).padStart(2, "0");
 
   const isDanger = seconds < 10;
+  let interval;
 
   useEffect(() => {
-    setInterval(() => {
-      setSeconds((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => {};
-  }, []);
+    if (isTimerRunning) {
+      interval = setInterval(() => {
+        setSeconds((prev) => (prev > 0 ? prev - 1 : 0));
+      }, 1000);
+    }
+    return () => {
+      clearInterval(interval);
+      setSeconds(60);
+    };
+  }, [isTimerRunning]);
+
+  const getTimerColor = () => {
+    if (isTimerRunning) {
+      return isDanger && "text-orange-500";
+    }
+    return "text-slate-200";
+  };
 
   return (
-    <div className="flex gap-3 items-center shadow-[2px_2px_5px_rgba(0,0,0,.3)] rounded-lg px-4 py-2">
+    <div
+      className={clsx(
+        "flex gap-3 items-center shadow-[2px_2px_5px_rgba(0,0,0,.3)] rounded-lg px-4 py-2",
+        isTimerRunning && "shadow-[3px_3px_7px_rgba(0,100,50,.5)]"
+      )}
+    >
       <div className={clsx("relative", isRight && "order-3")}>
         <Profile
           className="w-44"
@@ -90,9 +109,9 @@ function PlayerInfo({ playerInfo, isRight }) {
       <div className={clsx("h-6 w-px bg-slate-200", isRight && "order-2")} />
       <div
         className={clsx(
-          "text-slate-900 text-lg font-semibold",
+          "text-slate-900 text-lg font-semibold w-[60px] text-center",
           isRight && "order-1",
-          isDanger && "text-red-500"
+          getTimerColor()
         )}
       >
         {minutesString}:{secondsString}
