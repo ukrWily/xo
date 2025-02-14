@@ -109,7 +109,7 @@ function PlayerInfo({ playerInfo, isRight, isTimerRunning }) {
       <div className={clsx("h-6 w-px bg-slate-200", isRight && "order-2")} />
       <div
         className={clsx(
-          "text-slate-900 text-lg font-semibold w-[60px] text-center",
+          " text-lg font-semibold w-[60px] text-center",
           isRight && "order-1",
           getTimerColor()
         )}
