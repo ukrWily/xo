@@ -1,48 +1,21 @@
 import { useState } from "react";
-import { MOVE_ORDER } from "./constants";
 import { GAME_SYMBOLS } from "./constants";
-
-function getNextMove(currentMove, playersCount) {
-  const slicedMoveOrder = MOVE_ORDER.slice(0, playersCount);
-
-  const nextMoveIndex = slicedMoveOrder.indexOf(currentMove) + 1;
-  // return slicedMoveOrder[nextMoveIndex % slicedMoveOrder.length];
-  //  or
-  return slicedMoveOrder[nextMoveIndex] ?? slicedMoveOrder[0];
-}
-
-function computeWinner(cells, sequenceSize = 5, fieldSize = 19) {
-  const gap = Math.floor(sequenceSize / 2);
-
-  function getSequenceIndexes(i) {
-    const res = [
-      [], // -
-      [], // \
-      [], // /
-      [], // |
-    ];
-
-    for (let j = 0; j < array.length; j++) {
-      res[0].push();
-      res[1].push();
-      res[2].push();
-      res[3].push();
-    }
-  }
-
-  for (let i = 0; i < cells.length; i++) {
-    if (cells[i]) {
-    }
-  }
-}
+import { computeWinner, getNextMove } from "./model";
 
 export function useGameState(playersCount) {
-  const [{ cells, currentMove }, setGameState] = useState(() => ({
-    cells: new Array(19 * 19).fill(null),
-    currentMove: GAME_SYMBOLS.CROSS,
-  }));
+  const [{ cells, currentMove, playersTimeOver }, setGameState] = useState(
+    () => ({
+      cells: new Array(19 * 19).fill(null),
+      currentMove: GAME_SYMBOLS.CROSS,
+      playersTimeOver: [],
+    })
+  );
 
-  const nextMove = getNextMove(currentMove, playersCount);
+  const winnerSequence = computeWinner(cells);
+  const nextMove = getNextMove(currentMove, playersCount, playersTimeOver);
+
+  const winnerSymbol =
+    nextMove === currentMove ? currentMove : winnerSequence?.[0];
 
   const handleCellClick = (index) => {
     setGameState((lastGameState) => {
@@ -52,7 +25,11 @@ export function useGameState(playersCount) {
 
       return {
         ...lastGameState,
-        currentMove: getNextMove(lastGameState.currentMove, playersCount),
+        currentMove: getNextMove(
+          lastGameState.currentMove,
+          playersCount,
+          lastGameState.playersTimeOver
+        ),
         cells: lastGameState.cells.map((cell, i) =>
           i === index ? lastGameState.currentMove : cell
         ),
@@ -60,5 +37,27 @@ export function useGameState(playersCount) {
     });
   };
 
-  return { cells, currentMove, handleCellClick, nextMove };
+  const handlePlayerTimeOver = (symbol) => {
+    setGameState((lastGameState) => {
+      return {
+        ...lastGameState,
+        playersTimeOver: [...lastGameState.playersTimeOver, symbol],
+        currentMove: getNextMove(
+          lastGameState.currentMove,
+          playersCount,
+          lastGameState.playersTimeOver
+        ),
+      };
+    });
+  };
+
+  return {
+    cells,
+    currentMove,
+    handleCellClick,
+    handlePlayerTimeOver,
+    nextMove,
+    winnerSequence,
+    winnerSymbol,
+  };
 }
