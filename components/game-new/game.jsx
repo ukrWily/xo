@@ -4,8 +4,22 @@ import { GameTitle } from "./ui/game-title";
 import { GameInfo } from "./ui/game-info";
 import { PlayerInfo } from "./ui/player-Info";
 import { PLAYERS } from "./constants";
+import { useGameState } from "./model/use-game-state";
+import { GameMoveInfo } from "./ui/game-move-info";
+import { GameCell } from "./ui/game-cell";
+
+const PLAYERS_COUNT = 4;
 
 export function Game() {
+  const {
+    cells,
+    currentMove,
+    nextMove,
+    handleCellClick,
+    winnerSequence,
+    winnerSymbol,
+  } = useGameState(PLAYERS_COUNT);
+
   return (
     <GameLayout
       backLink={<BackLink />}
@@ -23,6 +37,21 @@ export function Game() {
           isRight={index % 2 === 0}
           seconds={60}
         />
+      ))}
+      gameMoveInfo={
+        <GameMoveInfo currentMove={currentMove} nextMove={nextMove} />
+      }
+      gameCells={cells.map((cell, index) => (
+        // <GameCell key={index} index={index} symbol={cell} />
+        <GameCell
+          key={index}
+          isWinner={winnerSequence?.includes(index)}
+          disabled={!!winnerSymbol}
+          onClick={() => {
+            handleCellClick(index);
+          }}
+          symbol={cell}
+        ></GameCell>
       ))}
     />
   );
